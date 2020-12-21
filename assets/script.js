@@ -7,7 +7,7 @@ const questions = [
         b: 'loop', 
         c: 'function', 
         d: 'attribute' }, 
-        correctA: 'c'
+        correctA: 'function'
         },  
 
     { q: 'Which of the following is the appropriate syntax for a for loop?', 
@@ -16,7 +16,7 @@ const questions = [
         b: 'for([initial expression]; [condition]; [increment expression]) {statement}', 
         c: 'for([initial expression]; [condition]; [increment expression]) {statement}', 
         d: 'for([initial expression]; [condition]; [increment expression]) {statement}' },
-        correctA: 'b'
+        correctA: ''
         }, 
 
     { q: 'What does the return statement do?', 
@@ -67,10 +67,10 @@ document.getElementById("start-quiz").onclick= function startQuiz(){
 };
 
 var questionIndex = 0;
+var currQuestion = questions[questionIndex];
 
 function begQuiz() {
-  var firstQuestion = questions[questionIndex];
-  displayQuestion(firstQuestion);
+  displayQuestion(currQuestion);
 };
 
 function displayQuestion(question) {
@@ -91,7 +91,7 @@ function displayQuestion(question) {
      var answer2El = document.createElement("button");
      var answer0b = question.answer.b;
      answer2El.textContent = answer0b;
-     answer2El.className = "btn";
+     answer2El.className = "btn" ;
      actionContainerEl.appendChild(answer2El);
 
      // create answer3 button
@@ -112,13 +112,15 @@ function displayQuestion(question) {
 
 }
 
-document.getElementById("answer-list").onclick= function nextQuestion(){
-    var userAnswer= ;
+document.getElementById("answer-list").onclick= function nextQuestion(event){
+    var userAnswer = event.target.innerHTML;
+    var correctA = currQuestion.correctA;
     if (correctA == userAnswer) {
         document.getElementById("answer").innerHTML = "Correct!";
     } else {
         document.getElementById("answer").innerHTML = "Wrong!";
     }
+    
 };
 
 //function nextQuestion () {
