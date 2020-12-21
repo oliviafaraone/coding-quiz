@@ -13,19 +13,19 @@ const questions = [
     { q: 'Which of the following is the appropriate syntax for a for loop?', 
     answer:{ 
         a: 'for([initial expression]; [condition]; [increment expression]) {statement}', 
-        b: 'for([initial expression]; [condition]; [increment expression]) {statement}', 
-        c: 'for([initial expression]; [condition]; [increment expression]) {statement}', 
-        d: 'for([initial expression]; [condition]; [increment expression]) {statement}' },
-        correctA: ''
+        b: 'for([condition]; [initial expression];  [increment expression]) {statement}', 
+        c: 'for([initial expression]; [increment expression]; [condition]; ) {statement}', 
+        d: 'for([condition]; [increment expression], [initial expression]; ) {statement}' },
+        correctA: 'for([initial expression]; [condition]; [increment expression]) {statement}'
         }, 
 
     { q: 'What does the return statement do?', 
     answer:{ 
-        a: '', 
-        b: '', 
-        c: '', 
-        d: 'it returns a value, but it also ends function execution right then and there' },
-        correctA: 'd'
+        a: 'it returns a value, and continues executing the function', 
+        b: 'it does not return a value, but it continues executiting the function', 
+        c: 'it does not return a value, and it ends function execution right then and there', 
+        d: 'it returns a value, but it ends function execution right then and there' },
+        correctA: 'it returns a value, but it ends function execution right then and there'
     }, 
 
     { q: 'What syntax would you use to stop the page from refreshing and removing input page information', 
@@ -33,17 +33,17 @@ const questions = [
         a: 'event.preventDefault();', 
         b: 'event.stopload();', 
         c: 'event.freezeInput();', 
-        d: 'event.stayPage();' },
-        correctA: 'a'
+        d: 'event.stopPropagation();' },
+        correctA: 'event.preventDefault();'
     }, 
 
     { q: 'With the use of ______, we can set up the click event listener on a parent element and then, through that single event listener, determine which child elements were clicked.', 
     answer:{ 
-        a: '', 
-        b: '', 
+        a: 'event listeners', 
+        b: 'event target', 
         c: 'event delegation', 
-        d: '' },
-        correctA: 'c'
+        d: 'event interface' },
+        correctA: 'event delegation'
     } 
   ];
 
@@ -62,27 +62,36 @@ document.getElementById("start-quiz").onclick= function startQuiz(){
 
     //createAnswerButtons2();
 
+    timer();
     begQuiz();
  
 };
 
 var questionIndex = 0;
 var currQuestion = questions[questionIndex];
+var cls = JSON.stringify(questionIndex);
 
 function begQuiz() {
   displayQuestion(currQuestion);
+  console.log(currQuestion);
 };
 
 function displayQuestion(question) {
+   
+    
     var question0 = question.q; 
+    
     page.querySelector("#header").textContent = question0;
 
     var actionContainerEl = document.createElement("div");
-    actionContainerEl.className = "questions";
+    actionContainerEl.id = cls;
+    console.log(actionContainerEl.setAttribute);
+ //   actionContainerEl.className = "questions";
 
      //create answer1 button
      var answer1El = document.createElement("button");
      var answer0a = question.answer.a;
+     answer1El.textContent = "";
      answer1El.textContent = answer0a;
      answer1El.className = "btn";
      actionContainerEl.appendChild(answer1El);
@@ -110,6 +119,7 @@ function displayQuestion(question) {
 
      document.querySelector('#answer-list').appendChild(actionContainerEl);
 
+     
 }
 
 document.getElementById("answer-list").onclick= function nextQuestion(event){
@@ -117,12 +127,34 @@ document.getElementById("answer-list").onclick= function nextQuestion(event){
     var correctA = currQuestion.correctA;
     if (correctA == userAnswer) {
         document.getElementById("answer").innerHTML = "Correct!";
+        timeLeft=timeLeft + 10;
     } else {
         document.getElementById("answer").innerHTML = "Wrong!";
+        timeLeft=timeLeft - 10;
+    }
+
+ // removeBtn ();
+    questionIndex++;
+    
+    console.log(questionIndex);
+    var nextQuestion = questions[questionIndex]; 
+    if (nextQuestion < questions.length){
+        displayQuestion(nextQuestion);
+    } else {
+        allDone();
     }
     
-};
+}
 
+function removeBtn (){
+   var removeBtn = document.getElementById(cls);
+  removeBtn.textContent="";
+ //   var removeBtn = document.getElementById(cls);
+  //  removeBtn.parentNode.removeChild(removeBtn);
+ //   removeBtn.parentNode.removeChild(removeBtn);
+
+}
+;
 //function nextQuestion () {
 
     // grade the user's answer
@@ -133,126 +165,67 @@ document.getElementById("answer-list").onclick= function nextQuestion(event){
  // }
 
 
-function createAnswerButtons2(){
 
-    page.querySelector("#header").textContent = questions.q;
+//Timer that counts down from 75 seconds
+var timerEl = document.getElementById('timer');
+var startBtn = document.getElementById('start');
+var timeLeft = 5;
 
-    var actionContainerEl = document.createElement("div");
-    actionContainerEl.className = "questions";
-    
-     // create answer1 button
-     var answer1El = document.createElement("button");
-     const a = questions[0]
-     answer1El.textContent = a;
-     actionContainerEl.appendChild(answer1El);
-
-    //  // create answer2 button
-    //  var answer2El = document.createElement("button");
-    //  const b = questions.answer.b
-    //  answer2El.textContent = b;
-    //  actionContainerEl.appendChild(answer2El);
-
-    //  // create answer3 button
-    //  var answer3El = document.createElement("button");
-    //  const c = questions.answer.c
-    //  answer3El.textContent = c;
-    //  actionContainerEl.appendChild(answer3El);
-
-    //  // create answer4 button
-    //  var answer4El = document.createElement("button");
-    //  const d = questions.answer.d
-    //  answer4El.textContent = d;
-    //  actionContainerEl.appendChild(answer4El);
-
-
-     document.querySelector('#quiz-questions').appendChild(actionContainerEl)
-     console.log(actionContainerEl);
-     console.log(questions);
-     return answer1El;
-    
-;
+function timer() {
+  
+    // Use the `setInterval()` method to call a function to be executed every 1000 milliseconds
+    var timeInterval = setInterval(function() {
+      if (timeLeft >= 0) {
+        timerEl.textContent = 'Timer: ' + timeLeft ;
+        // Decrement `timeLeft` by 1
+        timeLeft--;
+      } else {
+        // Use `clearInterval()` to stop the timer
+        clearInterval(timeInterval);
+        // Call the `allDone()` function
+        allDone();
+      }
+    }, 1000);
   }
-
-
-
-      
-  function createAnswerButtons(){
-
-    page.querySelector("#header").textContent = "A _______ is a predefined action that we can call or invoke in our code (after we declare it earlier in the code";
-
-    var actionContainerEl = document.createElement("div");
-    actionContainerEl.className = "questions";
-    
-     // create answer1 button
-     var answer1El = document.createElement("button");
-     answer1El.textContent = "element";
-     actionContainerEl.appendChild(answer1El);
-
-     // create answer2 button
-     var answer2El = document.createElement("button");
-     answer2El.textContent = "loop";
-     actionContainerEl.appendChild(answer2El);
-
-     // create answer3 button
-     var answer3El = document.createElement("button");
-     answer3El.textContent = "function";
-     actionContainerEl.appendChild(answer3El);
-
-     // create answer4 button
-     var answer4El = document.createElement("button");
-     answer4El.textContent = "attribute";
-     actionContainerEl.appendChild(answer4El);
-
-
-     document.querySelector('#quiz-questions').appendChild(actionContainerEl)
-     console.log(actionContainerEl);
-    //  return answer1El;
-    
-
-  };
-  //createAnswerButtons();
-
-
-// Timer that counts down from 75 seconds
-// var timerEl = document.getElementById('timer');
-// var startBtn = document.getElementById('start');
-
-// function timer() {
-//     var timeLeft = 75;
-  
-//     // Use the `setInterval()` method to call a function to be executed every 1000 milliseconds
-//     var timeInterval = setInterval(function() {
-//       if (timeLeft > 0) {
-//         timerEl.textContent = 'Timer: ' + timeLeft ;
-//         // Decrement `timeLeft` by 1
-//         timeLeft--;
-//       } else {
-//         // Use `clearInterval()` to stop the timer
-//         clearInterval(timeInterval);
-//         // Call the `allDone()` function
-//         allDone();
-//       }
-//     }, 1000);
-//   }
   
   
-// function allDone(){
-//     var finalScore= 'Your final score is ' + timeLeft + '.';
-//     var playerInInput = document.querySelector("input[name='player-initials']").value;
 
-//     var taskInfoEl = document.createElement("div");
-//     taskInfoEl.className = "task-info";
-//     taskInfoEl.innerHTML =
-//       "<h2 class='task-name'>" + finalScore + "</h3><span class='task-type'>" + taskDataObj.type + "</span>";
-//     listItemEl.appendChild(taskInfoEl);
+function allDone(){
+
+    removeBtn ();
+
+    page.querySelector("#header").textContent = 'All done!' ;
+
+    var scoreInfoEl = document.createElement("div");
+    scoreInfoEl.innerHTML = ('Your final score is ' + timeLeft + '.');
+    scoreInfoEl.className = "score-info";
+
+    var scoreIn = document.createElement("h3");
+    scoreIn.textContent = ('Enter initials: '); 
+    scoreIn.className = "score-info";
+    scoreInfoEl.appendChild(scoreIn);
+
+    var score = document.createElement("input");
+    // score.textContent = ('Enter initials: ');
+    score.type= "test";
+    scoreInfoEl.appendChild(score);
+
+    var submit = document.createElement("button");
+    submit.textContent = "Submit";
+    submit.id="sub-score";
+    scoreInfoEl.appendChild(submit);
+
+
+    document.querySelector('#score-form').appendChild(scoreInfoEl);
   
-// }
-
-// allDone();
+}
 
 
 
+document.getElementById("sub-score").onclick= function highScores(event){
 
+    location.href=window.location.href='./scores.html';
+};
 
 //   function showQuestions(questions, quizContainer){
 //     // we'll need a place to store the output and the answer choices
