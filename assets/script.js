@@ -1,7 +1,7 @@
 
 // The array of questions for the game.
 const questions = [
-    { q: 'A _______ is a predefined action that we can call or invoke in our code (after we declare it earlier in the code', 
+    { q: 'A _______ is a predefined action that we can call or invoke in our code, after we declare it earlier in the code', 
     answer:{ 
         a: 'element', 
         b: 'loop', 
@@ -58,40 +58,39 @@ document.getElementById("start-quiz").onclick= function startQuiz(){
     var removeStart = document.getElementById("start-quiz");
     removeStart.parentNode.removeChild(removeStart);
 
+
     //createQuestions();
 
-    //createAnswerButtons2();
+    //createAnswerButtons();
 
-    timer();
+  //timer();
     begQuiz();
  
 };
 
+
 var questionIndex = 0;
 var currQuestion = questions[questionIndex];
-var cls = JSON.stringify(questionIndex);
 
 function begQuiz() {
   displayQuestion(currQuestion);
-  console.log(currQuestion);
 };
 
 function displayQuestion(question) {
-   
-    
     var question0 = question.q; 
-    
     page.querySelector("#header").textContent = question0;
 
+    if (questionIndex==0){ 
+    
     var actionContainerEl = document.createElement("div");
-    actionContainerEl.id = cls;
-    console.log(actionContainerEl.setAttribute);
+    actionContainerEl.id = "cls";
+    //console.log(actionContainerEl.setAttribute);
  //   actionContainerEl.className = "questions";
 
      //create answer1 button
      var answer1El = document.createElement("button");
      var answer0a = question.answer.a;
-     answer1El.textContent = "";
+    // answer1El.textContent = "";
      answer1El.textContent = answer0a;
      answer1El.className = "btn";
      actionContainerEl.appendChild(answer1El);
@@ -119,8 +118,29 @@ function displayQuestion(question) {
 
      document.querySelector('#answer-list').appendChild(actionContainerEl);
 
+     questionIndex++;
+     console.log(questionIndex);
+    }
+
+    else {
+
+    var answer0a = question.answer.a;
+    console.log(answer0a);
+    answer1El.textContent = answer0a;
+
+    var answer0b = question.answer.b;
+    answer2El.textContent = answer0b;
+
+    var answer0c = question.answer.c;
+    answer3El.textContent = answer0c;
+
+    var answer0d = question.answer.d;
+    answer4El.textContent = answer0d;
+    }
      
 }
+
+
 
 document.getElementById("answer-list").onclick= function nextQuestion(event){
     var userAnswer = event.target.innerHTML;
@@ -133,28 +153,22 @@ document.getElementById("answer-list").onclick= function nextQuestion(event){
         timeLeft=timeLeft - 10;
     }
 
- // removeBtn ();
     questionIndex++;
-    
     console.log(questionIndex);
-    var nextQuestion = questions[questionIndex]; 
-    if (nextQuestion < questions.length){
-        displayQuestion(nextQuestion);
-    } else {
-        allDone();
-    }
-    
-}
 
-function removeBtn (){
-   var removeBtn = document.getElementById(cls);
-  removeBtn.textContent="";
- //   var removeBtn = document.getElementById(cls);
-  //  removeBtn.parentNode.removeChild(removeBtn);
- //   removeBtn.parentNode.removeChild(removeBtn);
+    begQuiz();
 
-}
-;
+   
+    //var nextQuestion = questions[questionIndex]; 
+    //if (nextQuestion < questions.length){
+    //    displayQuestion(nextQuestion);
+    // } else {
+     //    allDone();
+    };
+   
+//}
+
+
 //function nextQuestion () {
 
     // grade the user's answer
@@ -169,7 +183,7 @@ function removeBtn (){
 //Timer that counts down from 75 seconds
 var timerEl = document.getElementById('timer');
 var startBtn = document.getElementById('start');
-var timeLeft = 5;
+var timeLeft = 75;
 
 function timer() {
   
@@ -183,7 +197,7 @@ function timer() {
         // Use `clearInterval()` to stop the timer
         clearInterval(timeInterval);
         // Call the `allDone()` function
-        allDone();
+        //allDone();
       }
     }, 1000);
   }
@@ -193,6 +207,7 @@ function timer() {
 function allDone(){
 
     removeBtn ();
+    timeLeft=timeLeft;
 
     page.querySelector("#header").textContent = 'All done!' ;
 
@@ -222,63 +237,9 @@ function allDone(){
 
 
 
-document.getElementById("sub-score").onclick= function highScores(event){
+// document.getElementById("sub-score").onclick= function highScores(event){
 
-    location.href=window.location.href='./scores.html';
-};
+//     location.href=window.location.href='./scores.html';
+// };
 
-//   function showQuestions(questions, quizContainer){
-//     // we'll need a place to store the output and the answer choices
-//     var output = [];
-//     var answers;
-
-//     // for each question...
-//     for(var i=0; i<questions.length; i++){
-        
-//         // first reset the list of answers
-//         userAnswers = [];
-
-//         // for each available answer to this question...
-//         for(letter in questions[i].answers){
-
-
-//             // ...add an html radio button
-//             answers.push(
-//                 '<label>'
-//                     + '<input type="radio" name="question'+i+'" value="'+letter+'">'
-//                     + letter + ': '
-//                     + questions[i].answers[letter]
-//                 + '</label>'
-//             );
-//         }
-
-//         // add this question and its answers to the output
-//         output.push(
-//             '<div class="question">' + questions[i].question + '</div>'
-//             + '<div class="answers">' + answers.join('') + '</div>'
-//         );
-//     }
-
-//     // finally combine our output list into one string of html and put it on the page
-//     quizContainer.innerHTML = output.join('');
-
-// }
-//   function generateQuiz(questions, quizContainer, resultsContainer, submitButton){
-
-	
-
-// 	function showResults(questions, quizContainer, resultsContainer){
-// 		// code will go here
-// 	}
-
-// 	// show the questions
-// 	showQuestions(questions, quizContainer);
-
-// 	// when user clicks submit, show results
-// 	submitButton.onclick = function(){
-// 		showResults(questions, quizContainer, resultsContainer);
-// 	}
-// }
-
-  
 
