@@ -64,79 +64,54 @@ document.getElementById("start-quiz").onclick= function startQuiz(){
     //createAnswerButtons();
 
   //timer();
-    begQuiz();
- 
+    displayQuestion();
 };
 
 
 var questionIndex = 0;
 var currQuestion = questions[questionIndex];
 
-function begQuiz() {
-  displayQuestion(currQuestion);
-};
-
 function displayQuestion(question) {
-    var question0 = question.q; 
-    page.querySelector("#header").textContent = question0;
 
-    if (questionIndex==0){ 
+    document.querySelector('#answer-list').innerHTML='';
+
+    console.log(questionIndex);
+    var question0 = questions[questionIndex].q; 
+    page.querySelector("#header").textContent = question0;
     
     var actionContainerEl = document.createElement("div");
     actionContainerEl.id = "cls";
-    //console.log(actionContainerEl.setAttribute);
- //   actionContainerEl.className = "questions";
 
      //create answer1 button
      var answer1El = document.createElement("button");
-     var answer0a = question.answer.a;
-    // answer1El.textContent = "";
+     var answer0a = questions[questionIndex].answer.a;
+     console.log(answer0a);
      answer1El.textContent = answer0a;
      answer1El.className = "btn";
      actionContainerEl.appendChild(answer1El);
 
     // create answer2 button
      var answer2El = document.createElement("button");
-     var answer0b = question.answer.b;
+     var answer0b = questions[questionIndex].answer.b;
      answer2El.textContent = answer0b;
      answer2El.className = "btn" ;
      actionContainerEl.appendChild(answer2El);
 
      // create answer3 button
      var answer3El = document.createElement("button");
-     var answer0c = question.answer.c;
+     var answer0c = questions[questionIndex].answer.c;
      answer3El.textContent = answer0c;
      answer3El.className = "btn";
      actionContainerEl.appendChild(answer3El);
 
      // create answer4 button
      var answer4El = document.createElement("button");
-     var answer0d = question.answer.d;
+     var answer0d = questions[questionIndex].answer.d;
      answer4El.textContent = answer0d;
      answer4El.className = "btn";
      actionContainerEl.appendChild(answer4El);
 
      document.querySelector('#answer-list').appendChild(actionContainerEl);
-
-     questionIndex++;
-     console.log(questionIndex);
-    }
-
-    else {
-
-    var answer0a = question.answer.a;
-    console.log(answer0a);
-    answer1El.textContent = answer0a;
-
-    var answer0b = question.answer.b;
-    answer2El.textContent = answer0b;
-
-    var answer0c = question.answer.c;
-    answer3El.textContent = answer0c;
-
-    var answer0d = question.answer.d;
-    answer4El.textContent = answer0d;
-    }
      
 }
 
@@ -156,17 +131,15 @@ document.getElementById("answer-list").onclick= function nextQuestion(event){
     questionIndex++;
     console.log(questionIndex);
 
-    begQuiz();
-
+   displayQuestion();
    
-    //var nextQuestion = questions[questionIndex]; 
-    //if (nextQuestion < questions.length){
-    //    displayQuestion(nextQuestion);
-    // } else {
-     //    allDone();
-    };
+    // if (questionIndex < questionIndex.length){
+    //     displayQuestion();
+    //  } else {
+    //      allDone();
+    // };
    
-//}
+};
 
 
 //function nextQuestion () {
