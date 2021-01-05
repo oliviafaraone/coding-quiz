@@ -58,12 +58,7 @@ document.getElementById("start-quiz").onclick= function startQuiz(){
     var removeStart = document.getElementById("start-quiz");
     removeStart.parentNode.removeChild(removeStart);
 
-
-    //createQuestions();
-
-    //createAnswerButtons();
-
-  //timer();
+    timer();
     displayQuestion();
 };
 
@@ -75,7 +70,6 @@ function displayQuestion(question) {
 
     document.querySelector('#answer-list').innerHTML='';
 
-    console.log(questionIndex);
     var question0 = questions[questionIndex].q; 
     page.querySelector("#header").textContent = question0;
     
@@ -85,7 +79,6 @@ function displayQuestion(question) {
      //create answer1 button
      var answer1El = document.createElement("button");
      var answer0a = questions[questionIndex].answer.a;
-     console.log(answer0a);
      answer1El.textContent = answer0a;
      answer1El.className = "btn";
      actionContainerEl.appendChild(answer1El);
@@ -131,26 +124,15 @@ document.getElementById("answer-list").onclick= function nextQuestion(event){
     questionIndex++;
     console.log(questionIndex);
 
-   displayQuestion();
+  //displayQuestion();
    
-    // if (questionIndex < questionIndex.length){
-    //     displayQuestion();
-    //  } else {
-    //      allDone();
-    // };
+     if (questionIndex >= questions.length){
+        allDone(); 
+      } else {
+        displayQuestion(); 
+     };
    
 };
-
-
-//function nextQuestion () {
-
-    // grade the user's answer
-    // iterate
-  //  currentQuestionIndex++ 
-  //  var nextQuestion = questions[questionIndex] // the second question
-   // displayQuestion(nextQuestion)
- // }
-
 
 
 //Timer that counts down from 75 seconds
@@ -162,7 +144,7 @@ function timer() {
   
     // Use the `setInterval()` method to call a function to be executed every 1000 milliseconds
     var timeInterval = setInterval(function() {
-      if (timeLeft >= 0) {
+      if (timeLeft >= 0 && questionIndex < questions.length) {
         timerEl.textContent = 'Timer: ' + timeLeft ;
         // Decrement `timeLeft` by 1
         timeLeft--;
@@ -170,7 +152,7 @@ function timer() {
         // Use `clearInterval()` to stop the timer
         clearInterval(timeInterval);
         // Call the `allDone()` function
-        //allDone();
+        allDone();
       }
     }, 1000);
   }
@@ -179,7 +161,9 @@ function timer() {
 
 function allDone(){
 
-    removeBtn ();
+    var removeAnswers = document.getElementById("quiz-questions");
+    removeAnswers.parentNode.removeChild(removeAnswers);
+
     timeLeft=timeLeft;
 
     page.querySelector("#header").textContent = 'All done!' ;
@@ -194,7 +178,6 @@ function allDone(){
     scoreInfoEl.appendChild(scoreIn);
 
     var score = document.createElement("input");
-    // score.textContent = ('Enter initials: ');
     score.type= "test";
     scoreInfoEl.appendChild(score);
 
@@ -203,16 +186,15 @@ function allDone(){
     submit.id="sub-score";
     scoreInfoEl.appendChild(submit);
 
-
     document.querySelector('#score-form').appendChild(scoreInfoEl);
+
+    document.getElementById("sub-score").onclick= function highScores(event){
+            window.location ='./scores.html';         
+     };
+    
   
-}
+};
 
 
-
-// document.getElementById("sub-score").onclick= function highScores(event){
-
-//     location.href=window.location.href='./scores.html';
-// };
 
 
